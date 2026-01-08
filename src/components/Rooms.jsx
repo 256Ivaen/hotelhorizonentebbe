@@ -227,7 +227,7 @@ const Rooms = ({ showAll = true }) => {
               <motion.button
                 key={index}
                 className={`h-2 rounded-full transition-all ${
-                  currentIndex === index ? 'w-8 bg-[#b97a38]' : 'w-2 bg-gray-300'
+                  currentIndex === index ? 'w-8 bg-[#b97a38]' : 'w-2 '
                 }`}
                 onClick={() => {
                   setDirection(index > currentIndex ? 'right' : 'left');

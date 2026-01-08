@@ -79,9 +79,6 @@ const About = () => {
 
   return (
     <section className="py-20 bg-white relative overflow-hidden">
-      {/* Decorative elements */}
-      <div className="absolute top-0 left-0 w-1/2 h-px bg-gradient-to-r from-transparent to-[#b97a38]/20"></div>
-      <div className="absolute bottom-0 right-0 w-1/2 h-px bg-gradient-to-l from-transparent to-[#b97a38]/20"></div>
       
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -135,7 +132,7 @@ const About = () => {
               Indulge in a culinary journey at Hotel Horizon's award-winning restaurant, where our masterful chefs transform locally-sourced ingredients into exquisite dishes that captivate the senses. Experience elegant dining in a sophisticated atmosphere with impeccable service that elevates every moment.
             </motion.p>
             
-            <motion.div
+            {/* <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 1 }}
@@ -158,7 +155,7 @@ const About = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
               </motion.button>
-            </motion.div>
+            </motion.div> */}
           </motion.div>
           
           {/* Images Section - Desktop */}

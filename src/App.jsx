@@ -14,6 +14,7 @@ import Admin from './pages/Admin';
 import Events from './pages/Events';
 import RoomSample from './pages/RoomSample';
 import Service from './pages/Service';
+import NotFound from './pages/NotFound';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import SearchBar from './components/SearchBar';
@@ -46,6 +47,7 @@ const App = () => {
           <Route path="/room/:roomId" element={<Room />} />
           <Route path="/bloginfo/:blogid" element={<BlogInfo />} />
           <Route path="/service/:serviceId" element={<Service />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
 

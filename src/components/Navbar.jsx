@@ -50,8 +50,8 @@ const Navbar = () => {
         </svg>
       )
     },
-    { 
-      name: "ROOMS", 
+    {
+      name: "ROOMS",
       path: "/rooms",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -59,18 +59,18 @@ const Navbar = () => {
         </svg>
       )
     },
-    { 
-      name: "DINING", 
-      path: "/dining",
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2h2.5M15 11h4.5a2 2 0 012 2v1a2 2 0 01-2 2h-5.5M3 16V8a1 1 0 011-1h14a1 1 0 011 1v.5M9.5 12h5" />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 8V7m0 1v1m0-1h1m-1 0H8m2 6l1-5h-1l-1 5h1zm4-5h-2l1 5h1l-1-5z" />
-        </svg>
-      )
-    },
-    { 
-      name: "EVENTS", 
+    // {
+    //   name: "DINING",
+    //   path: "/dining",
+    //   icon: (
+    //     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    //       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2h2.5M15 11h4.5a2 2 0 012 2v1a2 2 0 01-2 2h-5.5M3 16V8a1 1 0 011-1h14a1 1 0 011 1v.5M9.5 12h5" />
+    //       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 8V7m0 1v1m0-1h1m-1 0H8m2 6l1-5h-1l-1 5h1zm4-5h-2l1 5h1l-1-5z" />
+    //     </svg>
+    //   )
+    // },
+    {
+      name: "EVENTS",
       path: "/events",
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -92,9 +92,9 @@ const Navbar = () => {
   return (
     <>
       <motion.div
-        initial={{ y: -100 }}
+        initial={{ y: 0 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
+        transition={{ duration: 0 }}
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
           scrolled || !isHomePage
             ? "bg-white/95 backdrop-blur-sm shadow-md"
@@ -135,7 +135,7 @@ const Navbar = () => {
               >
                 <button
                   onClick={() => handleNavigation(item.path)}
-                  className={`py-2 text-xs font-medium tracking-widest transition-all duration-300 flex items-center gap-2 ${
+                  className={`py-2 text-xs font-medium tracking-widest transition-all duration-300 ${
                     location.pathname === item.path
                       ? scrolled || !isHomePage
                         ? "text-[#b97a38]"
@@ -145,10 +145,6 @@ const Navbar = () => {
                       : "text-white/90 hover:text-white"
                   }`}
                 >
-                  {/* Show icon only for active item */}
-                  {location.pathname === item.path && (
-                    <span className={`text-[#b97a38] mr-1.5`}>{item.icon}</span>
-                  )}
                   {item.name}
                 </button>
                 
@@ -244,14 +240,8 @@ const Navbar = () => {
                   whileTap={{ scale: 0.98 }}
                   transition={{ duration: 0.1 }}
                 >
-                  <div className="flex items-center">
-                    {/* Always show icon on mobile, with highlight for active item */}
-                    <span className={`mr-3 ${location.pathname === item.path ? "text-[#b97a38]" : "text-gray-400"}`}>
-                      {item.icon}
-                    </span>
-                    {item.name}
-                  </div>
-                  
+                  <span>{item.name}</span>
+
                   {location.pathname === item.path && (
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-[#b97a38]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

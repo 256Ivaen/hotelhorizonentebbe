@@ -46,7 +46,7 @@ const Blog = () => {
       {featuredBlog && (
         <div className="flex flex-col sm:flex-row sm:mb-5">
           <div
-            className="relative w-full h-[350px] flex items-end justify-center py-10 sm:py-0 bg-gray-300 rounded-lg"
+            className="relative w-full h-[350px] flex items-end justify-center py-10 sm:py-0  rounded-lg"
             style={{
               backgroundImage: `url(${featuredBlog.image[0]})`,
               backgroundSize: "cover",

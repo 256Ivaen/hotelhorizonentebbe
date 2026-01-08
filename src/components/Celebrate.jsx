@@ -5,7 +5,7 @@ const Explore = () => {
   return (
     <div className="flex flex-col sm:flex-row px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw] ">
       <div
-        className="relative w-full h-[350px] flex items-end justify-center py-10 sm:py-0 bg-gray-300 rounded-[30px]"
+        className="relative w-full h-[350px] flex items-end justify-center py-10 sm:py-0  rounded-[30px]"
         style={{
           backgroundImage: `url(${backgroundImage})`,
           backgroundSize: "cover",

@@ -19,7 +19,7 @@ const Reserve = () => {
         <div className="flex flex-col md:flex-row justify-between items-start gap-5">
           <div className="flex-[2] bg-white shadow-lg rounded-xl p-6 w-full">
             {/* Room Details */}
-            <div className="mb-6 bg-gray-300">
+            <div className="mb-6 ">
               <img src={image} alt={name} className="w-full rounded-xl" />
               <h2 className="text-2xl font-bold mt-4">{name}</h2>
               <p className="text-lg font-semibold text-gray-600">${price} / night</p>

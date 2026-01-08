@@ -6,7 +6,6 @@ import PhoneInput from "react-phone-number-input";
 import { assets } from "../assets/assets";
 import "react-phone-number-input/style.css";
 import { motion, AnimatePresence } from "framer-motion";
-import html2pdf from "html2pdf.js";
 import axios from "axios";
 
 const Reserve = () => {
@@ -314,166 +313,6 @@ const Reserve = () => {
     }
   };
 
-  const generatePDF = () => {
-    const htmlTemplate = `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <meta charset="UTF-8">
-        <script src="https://cdn.tailwindcss.com"></script>
-        <style>
-          @page { margin: 0.5in; size: A4; }
-          .page-break { page-break-before: always; break-before: page; }
-          @media print { .print-break { page-break-before: always; } }
-          .watermark { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); opacity: 0.05; z-index: -1; pointer-events: none; }
-        </style>
-      </head>
-      <body class="font-sans relative">
-        ${assets.logo ? `
-          <div class="watermark">
-            <img src="${assets.logo}" alt="Hotel Logo Watermark" style="width: 400px; height: 400px; object-fit: contain;" />
-          </div>
-        ` : ''}
-        
-        <div class="max-w-4xl mx-auto bg-white relative z-10">
-          <div class="min-h-screen p-6">
-            <div class="flex items-start mb-8">
-              ${assets.logo ? `<img src="${assets.logo}" alt="Hotel Logo" class="w-16 h-16 mr-6 object-contain" />` : ''}
-              <div>
-                <h1 class="text-3xl font-bold text-amber-600 leading-tight">Hotel Horizon</h1>
-                <p class="text-lg text-gray-500 mt-1">Booking Confirmation</p>
-              </div>
-            </div>
-
-            <div class="mb-8 p-4 bg-gray-50 rounded-lg">
-              <p class="text-sm text-black mb-2 font-medium">Confirmation Number: <span class="font-bold text-amber-600">${confirmationNumber}</span></p>
-              <p class="text-sm text-black">Booking Date: ${new Date().toLocaleDateString()}</p>
-            </div>
-
-            <div class="mb-10">
-              <h2 class="text-lg font-bold text-amber-600 mb-4 border-b-2 border-amber-600 pb-2">Guest Details</h2>
-              <div class="grid grid-cols-2 gap-4 text-sm text-black">
-                <div><span class="font-medium">Name:</span> ${firstName} ${lastName}</div>
-                <div><span class="font-medium">Phone:</span> ${phoneNumber}</div>
-                <div class="col-span-2"><span class="font-medium">Email:</span> ${email}</div>
-              </div>
-            </div>
-
-            <div class="mb-10">
-              <h2 class="text-lg font-bold text-amber-600 mb-4 border-b-2 border-amber-600 pb-2">Reservation Details</h2>
-              <div class="bg-gray-50 p-6 rounded-lg">
-                <h3 class="text-xl font-bold text-amber-700 mb-4">${selectedRoomData.name}</h3>
-                <div class="grid grid-cols-2 gap-4 text-sm text-black">
-                  <div><span class="font-medium">Check-in:</span> ${checkIn.toLocaleDateString()}</div>
-                  <div><span class="font-medium">Guests:</span> ${adults} Adult${adults > 1 ? 's' : ''}, ${children} Child${children !== 1 ? 'ren' : ''}</div>
-                  <div><span class="font-medium">Check-out:</span> ${checkOut.toLocaleDateString()}</div>
-                  <div><span class="font-medium">Duration:</span> ${totalNights} Night${totalNights > 1 ? 's' : ''}</div>
-                </div>
-              </div>
-            </div>
-
-            ${Object.values(extras).some(value => value) ? `
-              <div class="mb-10">
-                <h2 class="text-lg font-bold text-amber-600 mb-4 border-b-2 border-amber-600 pb-2">Additional Services</h2>
-                <div class="bg-white border border-gray-200 rounded-lg p-4 space-y-3">
-                  ${extras.airportPick ? `<div class="flex justify-between items-center"><span class="text-sm text-black">✓ Airport Pick-up Service</span><span class="text-sm font-bold text-amber-600">$${extrasPrices.airportPick}</span></div>` : ''}
-                  ${extras.airportDrop ? `<div class="flex justify-between items-center"><span class="text-sm text-black">✓ Airport Drop-off Service</span><span class="text-sm font-bold text-amber-600">$${extrasPrices.airportDrop}</span></div>` : ''}
-                  ${extras.halfBoard ? `<div class="flex justify-between items-center"><span class="text-sm text-black">✓ Half Board (Breakfast + Dinner)</span><span class="text-sm font-bold text-amber-600">$${extrasPrices.halfBoard}/night</span></div>` : ''}
-                  ${extras.fullBoard ? `<div class="flex justify-between items-center"><span class="text-sm text-black">✓ Full Board (All Meals)</span><span class="text-sm font-bold text-amber-600">$${extrasPrices.fullBoard}/night</span></div>` : ''}
-                </div>
-              </div>
-            ` : ''}
-
-            <div class="mb-10">
-              <h2 class="text-lg font-bold text-amber-600 mb-4 border-b-2 border-amber-600 pb-2">Price Summary</h2>
-              <div class="bg-gray-50 p-6 rounded-lg">
-                <div class="space-y-2 text-sm text-black mb-4">
-                  <div class="flex justify-between"><span>Room Rate: $${pricePerNight.toFixed(2)} × ${totalNights} nights</span><span class="font-medium">$${totalPrice.toFixed(2)}</span></div>
-                  ${occupancySurcharge > 0 ? `<div class="flex justify-between"><span>Double Occupancy Surcharge:</span><span class="font-medium">$${occupancySurcharge.toFixed(2)}</span></div>` : ''}
-                  <div class="flex justify-between"><span>Additional Services:</span><span class="font-medium">$${extrasTotal.toFixed(2)}</span></div>
-                </div>
-                <div class="bg-amber-600 text-white p-4 rounded-lg flex justify-between items-center">
-                  <span class="text-lg font-bold">TOTAL AMOUNT:</span>
-                  <span class="text-2xl font-bold">$${finalPrice.toFixed(2)}</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="text-center mt-12 pt-8 border-t border-gray-300">
-              <p class="text-xs text-gray-500">Hotel Horizon - Plot 11 - 13 Portal lane, Entebbe, Uganda</p>
-              <p class="text-xs text-gray-500 mt-1">Email: info@hotelhorizonug.com | Phone: +256 740 50 50 50</p>
-              <p class="text-xs text-gray-400 mt-3 italic">This confirmation serves as your booking receipt. Please present this document at check-in.</p>
-            </div>
-          </div>
-
-          <div class="page-break min-h-screen p-6">
-            <div class="text-center mb-10">
-              <div class="bg-amber-600 text-white p-6 rounded-lg">
-                <h1 class="text-2xl font-bold">HOTEL INFORMATION & AMENITIES</h1>
-              </div>
-            </div>
-
-            <div class="mb-8">
-              <h2 class="text-lg font-bold text-amber-600 mb-4 border-b-2 border-amber-600 pb-2">Hotel Contact Information</h2>
-              <div class="bg-gray-50 p-6 rounded-lg">
-                <div class="text-sm text-black space-y-2">
-                  <p class="font-bold text-amber-700">Hotel Horizon</p>
-                  <p>Plot 11 - 13 Portal Lane, Entebbe, Uganda</p>
-                  <p>Email: info@hotelhorizonug.com</p>
-                  <p>Phone: +256 740 50 50 50</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="mb-8">
-              <h2 class="text-lg font-bold text-amber-600 mb-4 border-b-2 border-amber-600 pb-2">Hotel Amenities</h2>
-              <div class="grid grid-cols-2 gap-2 text-sm text-black ml-4">
-                <p>• Free Wi-Fi throughout the property</p>
-                <p>• 24-hour front desk service</p>
-                <p>• Restaurant and bar on-site</p>
-                <p>• Swimming pool and fitness center</p>
-                <p>• Airport shuttle service (additional charges apply)</p>
-                <p>• Laundry and dry cleaning services</p>
-                <p>• Business center and meeting rooms</p>
-                <p>• Complimentary parking</p>
-              </div>
-            </div>
-
-            <div class="bg-amber-50 border-2 border-amber-200 p-6 rounded-lg mb-8">
-              <h2 class="text-lg font-bold text-amber-600 mb-4">Important Notes</h2>
-              <div class="text-sm text-black space-y-2 ml-4">
-                <p>• Please arrive with a valid photo ID and credit card for incidentals</p>
-                <p>• Additional charges may apply for services not included in your booking</p>
-                <p>• For any changes or special requests, please contact us directly</p>
-                <p>• Check-in time: 2:00 PM | Check-out time: 12:00 PM</p>
-                <p>• Free cancellation up to 24 hours before check-in</p>
-              </div>
-            </div>
-
-            <div class="text-center mt-8">
-              <p class="text-sm italic text-gray-500">Thank you for choosing Hotel Horizon. We look forward to welcoming you!</p>
-            </div>
-          </div>
-        </div>
-      </body>
-      </html>
-    `;
-
-    const opt = {
-      margin: 0.5,
-      filename: `Hotel_Horizon_Booking_${confirmationNumber}.pdf`,
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, allowTaint: true, letterRendering: true },
-      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
-      pagebreak: { mode: ['avoid-all', 'css', 'legacy'], before: '.page-break' }
-    };
-
-    const element = document.createElement('div');
-    element.innerHTML = htmlTemplate;
-    
-    return html2pdf().set(opt).from(element);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -487,10 +326,7 @@ const Reserve = () => {
     try {
       const confirmationNum = confirmationNumber || `HH${Date.now()}`;
       setConfirmationNumber(confirmationNum);
-      
-      const pdfDoc = generatePDF();
-      const pdfBase64 = await pdfDoc.output('datauristring');
-      
+
       const formData = {
         confirmationNumber: confirmationNum,
         firstName,
@@ -509,15 +345,13 @@ const Reserve = () => {
         extrasTotal,
         occupancySurcharge,
         finalPrice,
-        specialRequests: specialRequests || "None",
-        pdfAttachment: pdfBase64
+        specialRequests: specialRequests || "None"
       };
-      
+
       const response = await axios.post('https://api.hotelhorizonug.com/reserve.php', formData);
-      
+
       if (response.data.success) {
         setSubmitSuccess(true);
-        pdfDoc.save(`Hotel_Horizon_Booking_${confirmationNum}.pdf`);
       } else {
         setSubmitError(response.data.message || "Failed to submit reservation");
       }
@@ -633,8 +467,8 @@ const Reserve = () => {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 py-10 -mt-10 relative z-10">
-        <div className="bg-white rounded-2xl p-6 md:p-10 border border-gray-100">
+      <div className="container mx-auto px-4 md:px-8 lg:px-12 py-10 -mt-10 relative z-10">
+        <div >
           {!submitSuccess ? (
             <>
               <ProgressIndicator />
@@ -669,7 +503,7 @@ const Reserve = () => {
 
                       {selectedRoomData && (
                         <div className="space-y-6">
-                          <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                          <div >
                             <div className="flex flex-col lg:flex-row gap-6">
                               <div className="lg:w-2/5">
                                 <img
@@ -1081,7 +915,7 @@ const Reserve = () => {
                         </p>
                       </div>
 
-                      <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                      <div>
                         <h3 className="font-semibold text-base text-gray-900 mb-4">Reservation Details</h3>
                         
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-10 gap-y-4 mb-6">
@@ -1175,16 +1009,16 @@ const Reserve = () => {
                             {occupancySurcharge > 0 && (
                               <div className="flex justify-between items-center">
                                 <span className="text-xs text-gray-900">Double Occupancy Surcharge</span>
-                                <span className="font-semibold text-sm text-gray-900">${occupancySurcharge.toFixed(2)}</span>
+                                <span className="font-light text-sm text-gray-900">${occupancySurcharge.toFixed(2)}</span>
                               </div>
                             )}
                             <div className="flex justify-between items-center">
                               <span className="text-xs text-gray-900">Additional Services</span>
-                              <span className="font-semibold text-sm text-gray-900">${extrasTotal.toFixed(2)}</span>
+                              <span className="font-light text-sm text-gray-900">${extrasTotal.toFixed(2)}</span>
                             </div>
                             <div className="border-t pt-3 flex justify-between items-center">
                               <span className="text-base font-semibold text-gray-900">Total</span>
-                              <span className="text-xl font-bold text-[#b97a38]">${finalPrice.toFixed(2)}</span>
+                              <span className="text-xl font-semibold text-[#b97a38]">${finalPrice.toFixed(2)}</span>
                             </div>
                           </div>
                         </div>
@@ -1271,24 +1105,24 @@ const Reserve = () => {
                 Booking <span className="text-[#b97a38] font-semibold">Confirmed</span>
               </h2>
               <p className="text-xs text-gray-600 mb-6 max-w-lg mx-auto">
-                Your reservation at Hotel Horizon has been successfully confirmed. A confirmation email with PDF attachment has been sent to {email}.
+                Your reservation at Hotel Horizon has been successfully confirmed. A confirmation email has been sent to {email}.
               </p>
-              <div className="bg-[#b97a38]/10 p-5 rounded-xl inline-block mb-8 border border-[#b97a38]/20">
+              <div className="p-5 rounded-xl inline-block mb-8 border border-[#b97a38]/20">
                 <p className="text-xs text-gray-600 uppercase tracking-wide mb-1">Confirmation Number</p>
-                <p className="text-2xl font-bold text-[#b97a38]">{confirmationNumber}</p>
+                <p className="text-2xl font-light text-[#b97a38]">{confirmationNumber}</p>
               </div>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <button
                   onClick={() => navigate("/")}
-                  className="px-6 py-2.5 border-2 border-gray-300 rounded-lg text-xs text-gray-700 transition-all duration-300 font-medium"
+                  className="px-6 py-2.5 bg-[#b97a38] text-white rounded-lg transition-all duration-300 font-semibold text-xs"
                 >
                   Return to Homepage
                 </button>
                 <button
-                  onClick={() => generatePDF().save()}
-                  className="px-6 py-2.5 bg-[#b97a38] text-white rounded-lg transition-all duration-300 font-semibold text-xs"
+                  onClick={() => navigate("/rooms")}
+                  className="px-6 py-2.5 border-2 border-gray-300 rounded-lg text-xs text-gray-700 transition-all duration-300 font-medium"
                 >
-                  Download Confirmation
+                  Browse More Rooms
                 </button>
               </div>
             </motion.div>

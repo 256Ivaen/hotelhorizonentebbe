@@ -159,14 +159,13 @@ const Footer = () => {
               </div>
               
               <div className="flex items-start gap-3">
-                <div className="text-[#b97a38] mt-1">
+                <div className="text-[#b97a38]">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                 </div>
                 <div>
                   <p className="text-sm text-white/90">info@hotelhorizonug.com</p>
-                  <p className="text-sm text-white/90">reservations@hotelhorizonug.com</p>
                 </div>
               </div>
             </div>
@@ -258,18 +257,6 @@ const Footer = () => {
             <p className="text-white/50 text-xs">
               &copy; {new Date().getFullYear()} Hotel Horizon. All Rights Reserved.
             </p>
-            
-            <div className="flex gap-6">
-              <Link to="/privacy-policy" className="text-xs text-white/50 hover:text-white transition-all duration-300">
-                Privacy Policy
-              </Link>
-              <Link to="/terms-of-service" className="text-xs text-white/50 hover:text-white transition-all duration-300">
-                Terms of Service
-              </Link>
-              <Link to="/sitemap" className="text-xs text-white/50 hover:text-white transition-all duration-300">
-                Sitemap
-              </Link>
-            </div>
           </div>
         </div>
       </div>

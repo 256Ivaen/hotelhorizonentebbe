@@ -62,7 +62,7 @@ const Explore = () => {
         {offers.map((offer, index) => (
           <SwiperSlide key={index}>
             <div
-              className="relative w-full h-[200px] flex items-end justify-center py-2  bg-gray-300 rounded-[20px]"
+              className="relative w-full h-[200px] flex items-end justify-center py-2   rounded-[20px]"
               style={{
                 backgroundImage: `url(${offer.image})`,
                 backgroundSize: "cover",

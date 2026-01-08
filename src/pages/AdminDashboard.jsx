@@ -248,7 +248,7 @@ const AdminDashboard = () => {
               </button>
               <button
                 onClick={handleResetFilters}
-                className="flex-1 bg-gray-200 text-gray-700 py-2.5 px-4 rounded-xl text-xs font-semibold hover:bg-gray-300 transition-all duration-300"
+                className="flex-1 bg-gray-200 text-gray-700 py-2.5 px-4 rounded-xl text-xs font-semibold hover: transition-all duration-300"
               >
                 Reset
               </button>
